@@ -1,0 +1,30 @@
+title = "Homepage"
+url = "/"
+layout = "default"
+is_hidden = 0
+
+[staticMenu]
+
+[session]
+==
+<div class="bg-gray-100">
+    <main class="py-10">
+        <div class="lg:max-w-7xl mx-auto">
+            <div class="flex-row items-center">
+                <div class="px-5">
+                    <h1 class="text-6xl">Welcome to {{ tenant.name }}</h1>
+                </div>
+
+                {% if user %}
+                <div class="px-5 pt-5">
+                    {% partial 'components/dashboard-stats' %}
+                </div>
+
+                <div class="px-5 pt-5">
+                    {% partial 'components/course-grid' %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+</div>

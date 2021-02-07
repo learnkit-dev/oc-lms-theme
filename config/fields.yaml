@@ -1,0 +1,35 @@
+tabs:
+    fields:
+        name:
+            label: Name
+            span: left
+            type: text
+            tab: General
+
+        logo:
+            label: Logo
+            span: right
+            type: fileupload
+            tab: General
+
+        course_sidebar:
+            label: Show course sidebar
+            span: left
+            type: switch
+            tab: Features
+
+        show_new_course_badge:
+            label: Show new course badge
+            span: left
+            type: switch
+            tab: Features
+
+        new_course_day_count:
+            label: New course day count
+            span: left
+            type: number
+            tab: Features
+            trigger:
+                action: show
+                field: show_new_course_badge
+                condition: checked

@@ -1,0 +1,7 @@
+name: "LMS for LearnKit"
+description: "Basic LMS theme"
+author: "LearnKit"
+homepage: "https://learnkit.dev"
+code: "lms"
+extends: tailwindui
+form: config/fields.yaml

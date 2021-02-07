@@ -1,0 +1,21 @@
+{
+  "name": "tailwind-ui",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "",
+  "scripts": {
+    "build": "postcss assets/src/theme.css -o assets/css/theme.css"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@tailwindcss/forms": "^0.2.1",
+    "alpinejs": "^2.7.3",
+    "autoprefixer": "^10.0.2",
+    "tailwindcss": "2.0.0"
+  },
+  "devDependencies": {
+    "postcss": "^8.1.7",
+    "postcss-cli": "^8.3.0"
+  }
+}

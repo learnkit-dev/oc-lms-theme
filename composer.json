@@ -1,0 +1,12 @@
+{
+    "name": "learnkit/oc-lms-theme",
+    "description": "LMS theme for LearnKit for October CMS",
+    "type": "october-theme",
+    "authors": [
+        {
+            "name": "Sebastiaan Kloos",
+            "email": "sebastiaan@codecycler.com"
+        }
+    ],
+    "require": {}
+}

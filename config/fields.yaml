@@ -33,3 +33,12 @@ tabs:
                 action: show
                 field: show_new_course_badge
                 condition: checked
+
+        custom_css:
+            label: Custom CSS
+            span: full
+            type: codeeditor
+            size: giant
+            tab: Custom CSS
+            language: css
+            showGutter: true

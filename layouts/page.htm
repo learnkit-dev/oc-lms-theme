@@ -9,6 +9,12 @@
         <link href="{{ ['assets/css/theme.css', 'assets/vendor/fa/css/all.css']|theme }}" rel="stylesheet">
 
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.3/dist/alpine.min.js" defer></script>
+
+        <title>{{ this.page.title }} - {{ this.theme.name }}</title>
+
+        <style>
+            {{ this.theme.custom_css|raw }}
+        </style>
     </head>
 
     <body class="bg-white">

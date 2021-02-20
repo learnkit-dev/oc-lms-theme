@@ -46,6 +46,12 @@ slug = "{{ :pageSlug }}"
                                     {% else %}
                                         {{ lmsPage.renderContentBlock(contentBlock)|raw }}
                                     {% endif %}
+
+                                    {% if contentBlock.custom_js %}
+                                        <script>
+                                            {{ contentBlock.custom_js|raw }}
+                                        </script>
+                                    {% endif %}
                                 </div>
                             {% endfor %}
                         </div>
@@ -111,27 +117,29 @@ slug = "{{ :pageSlug }}"
                         <ul class="-mb-8">
                             {% for page in lmsCourse.pages  %}
                             <li>
-                                <div class="relative pb-8">
-                                    {% if loop.index < lmsCourse.pages|length %}
-                                        <span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>
-                                    {% endif %}
-                                    <div class="relative flex space-x-3">
-                                        <div>
-                                          <span class="h-8 w-8 rounded-full {{ page.is_completed ? 'bg-green-600' : '' }} {{ page.slug == this.param.pageSlug ? 'bg-indigo-600' : 'bg-gray-400' }} flex items-center justify-center ring-8 ring-white">
-                                              {% if page.is_completed %}
-                                                <svg class="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-                                              {% else %}
-                                                <svg class="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                                              {% endif %}
-                                          </span>
-                                        </div>
-                                        <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                                <a href="{{ 'course'|page({courseSlug: lmsCourse.slug, pageSlug: page.slug}) }}">
+                                    <div class="relative pb-8">
+                                        {% if loop.index < lmsCourse.pages|length %}
+                                            <span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>
+                                        {% endif %}
+                                        <div class="relative flex space-x-3">
                                             <div>
-                                                <p class="text-sm text-gray-500">{{ page.name }}</p>
+                                              <span class="h-8 w-8 rounded-full {{ page.is_completed ? 'bg-green-600' : '' }} {{ page.slug == this.param.pageSlug ? 'bg-indigo-600' : 'bg-gray-400' }} flex items-center justify-center ring-8 ring-white">
+                                                  {% if page.is_completed %}
+                                                    <svg class="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                                                  {% else %}
+                                                    <svg class="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                                                  {% endif %}
+                                              </span>
+                                            </div>
+                                            <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                                                <div>
+                                                    <p class="text-sm text-gray-500">{{ page.name }}</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </a>
                             </li>
                             {% endfor %}
                         </ul>

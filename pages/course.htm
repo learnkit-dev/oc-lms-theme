@@ -39,6 +39,8 @@ slug = "{{ :pageSlug }}"
                                 {{ lmsPage.description|raw }}
                             </div>
 
+                            <div id="error-message"></div>
+
                             {% for contentBlock in lmsPage.content_blocks %}
                                 <div class="content-block w-full">
                                     {% if contentBlock.content_block_type == 'learnkit.lms::h5p' %}

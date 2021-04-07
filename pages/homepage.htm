@@ -15,12 +15,6 @@ is_hidden = 0
                     <h1 class="text-6xl">Welcome to {{ tenant.name }}</h1>
                 </div>
 
-                {% if user %}
-                <div class="px-5 pt-5">
-                    {% partial 'components/dashboard-stats' %}
-                </div>
-                {% endif %}
-
                 <div class="px-5 pt-5">
                     {% partial 'components/course-grid' %}
                 </div>

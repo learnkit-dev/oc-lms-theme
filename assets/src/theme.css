@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.alert.alert-success {
+    @apply bg-green-300;
+}
+
+.alert.alert-warning {
+    @apply bg-yellow-300;
+}
+
+.alert.alert-error {
+    @apply bg-red-300;
+}
+
+.alert.alert-info {
+    @apply bg-blue-300;
+}

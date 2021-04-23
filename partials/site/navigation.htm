@@ -3,7 +3,7 @@
 <!-- This example requires Tailwind CSS v2.0+ -->
 <div class="relative bg-white" id="main-navigation" x-data="{ isOpen: false }">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
-        <div class="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
+        <div class="flex justify-between items-center py-6 md:justify-start md:space-x-10">
             <div class="flex justify-start lg:w-0 lg:flex-1">
                 <a href="{{ 'homepage'|page }}">
                     <span class="{{ this.theme.logo ? 'sr-only' : 'font-medium text-xl' }}">{{ this.theme.name }}</span>
@@ -176,6 +176,10 @@
                         Registreren
                     </a>
                 {% else %}
+                    <a href="{{ 'account'|page }}" class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900 pr-5">
+                        Mijn account
+                    </a>
+
                     <a href="javascript:;" data-request="session::onLogout" data-request-data="redirect: '{{ 'login'|page }}'" class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
                         Uitloggen
                     </a>

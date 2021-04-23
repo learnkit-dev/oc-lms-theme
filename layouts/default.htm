@@ -25,6 +25,12 @@
     <body>
         {% partial 'site/navigation' %}
 
+        {% flash %}
+        <div class="alert alert-{{ type }} p-5">
+            {{ message }}
+        </div>
+        {% endflash %}
+
         {% page %}
 
         {% partial 'site/footer' %}

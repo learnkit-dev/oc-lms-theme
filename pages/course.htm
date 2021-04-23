@@ -97,12 +97,13 @@ slug = "{{ :pageSlug }}"
                     <a
                         class="float-right whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-green-600 hover:bg-green-700"
                         href="javascript:;"
-                        data-request="lmsPage::onMarkDone">
+                        data-request="lmsPage::onMarkDone"
+                        data-request-data="redirect: '{{ lmsCourse.properties.redirect_after_completion ?: '' }}'">
 
                         {% if lmsPage.properties.override_finish_page_text %}
                             {{ lmsPage.properties.override_finish_page_text }}
                         {% else %}
-                            Afronden
+                            {{ lmsCourse.properties.completion_button_text ?: 'Afronden' }}
                         {% endif %}
                     </a>
                     {% endif %}

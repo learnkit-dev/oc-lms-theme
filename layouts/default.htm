@@ -27,7 +27,9 @@
 
         {% flash %}
         <div class="alert alert-{{ type }} p-5">
-            {{ message }}
+            <div class="max-w-7xl mx-auto px-4 sm:px-6">
+                {{ message }}
+            </div>
         </div>
         {% endflash %}
 

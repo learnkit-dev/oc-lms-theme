@@ -12,8 +12,10 @@ is_hidden = 0
         <div class="lg:max-w-7xl mx-auto">
             <div class="flex-row items-center">
                 <div class="px-5">
-                    <h1 class="text-6xl">Welcome to {{ tenant.name }}</h1>
+                    <h1 class="text-2xl font-bold text-gray-900">Welcome to {{ this.theme.name }}</h1>
                 </div>
+
+                {% partial 'components/announcement' %}
 
                 <div class="px-5 pt-5">
                     {% partial 'components/course-grid' %}

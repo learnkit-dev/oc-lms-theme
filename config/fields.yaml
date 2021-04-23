@@ -42,3 +42,35 @@ tabs:
             tab: Custom CSS
             language: css
             showGutter: true
+
+        show_announcement:
+            label: Show announcement
+            span: left
+            default: false
+            type: switch
+            tab: Announcement
+
+        announcement_type:
+            label: Type
+            span: left
+            type: dropdown
+            tab: Announcement
+            options:
+                info: Information
+                warning: Warning
+                error: Error
+                success: Success
+
+        announcement_title:
+            label: Title
+            span: left
+            type: text
+            tab: Announcement
+
+        announcement:
+            label: Announcement
+            tab: Announcement
+            span: left
+            type: textarea
+
+

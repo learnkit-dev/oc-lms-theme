@@ -1,0 +1,11 @@
+{% if this.theme.show_announcement %}
+<div class="px-5">
+    <div class="alert alert-{{ this.theme.announcement_type }} rounded-lg p-5 mt-5 flex flex-col">
+        <span class="text-xl font-bold text-gray-900">{{ this.theme.announcement_title }}</span>
+
+        <div class="pt-3">
+            {{ this.theme.announcement }}
+        </div>
+    </div>
+</div>
+{% endif %}

@@ -1,0 +1,77 @@
+title = "Manage users"
+layout = "default"
+url = "/manage/:teamCode/users"
+==
+<?php
+function onStart()
+{
+    $team = auth()->user()->teams()
+        ->where('code', $this->param('teamCode'))
+        ->first();
+
+    $this['team'] = $team;
+    $this['courses'] = \LearnKit\LMS\Models\Course::where('team_id', $team->id)->get();
+}
+?>
+==
+<div class="bg-gray-100">
+    <main class="py-10">
+        <div class="lg:max-w-7xl mx-auto">
+            <div class="flex-row items-center">
+                <div class="px-5">
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-medium">Team {{ team.name }}</span>
+                        <span>Aantal gebruikers: {{ team.users|length }}</span>
+                    </div>
+
+                    <div class="pt-5">
+                        <span class="text-lg font-medium mb-2">Gebruikers</span>
+
+                        <div class="flex flex-col">
+                          <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                              <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                  <thead class="bg-gray-50">
+                                    <tr>
+                                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                          Naam
+                                      </th>
+                                        {% for course in courses %}
+                                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                              {{ course.name }}
+                                          </th>
+                                        {% endfor %}
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    
+                                    {% for user in team.users %}
+                                        <tr class="bg-white">
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                {{ user.name }} {{ user.surname }}
+                                            </td>
+                                            {% for course in courses %}
+                                          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                              <div class="flex flex-col">
+                                                  <span>{{ resultForCourse(course.id, user).percentageDone }}% gedaan</span>
+                                                  <span>{{ resultForCourse(course.id, user).total }} / {{ resultForCourse(course.id, user).max }} goed</span>
+                                              </div>
+                                          </td>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                    
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

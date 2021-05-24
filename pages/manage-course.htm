@@ -93,7 +93,9 @@ function onStart()
                                                                             {% if score.total == 1 %}
                                                                                 Goed
                                                                             {% else %}
-                                                                                Fout
+                                                                                {% if score.status %}
+                                                                                    Fout
+                                                                                {% endif %}
                                                                             {% endif %}
                                                                         {% else %}
                                                                             {{ score.total }} / {{ score.max }}

@@ -12,6 +12,13 @@ tabs:
             type: fileupload
             tab: General
 
+        login_required:
+            label: Login required
+            span: left
+            type: checkbox
+            default: false
+            tab: General
+
         course_sidebar:
             label: Show course sidebar
             span: left

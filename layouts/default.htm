@@ -1,5 +1,18 @@
 [session]
 ==
+<?php
+
+public function onStart()
+{
+    $themeData = $this->theme->getCustomData();
+
+    if ($themeData->login_required && !Auth::check() && $this->page->url !== '/login') {
+        return redirect('/login');
+    }
+}
+
+?>
+==
 <!doctype html>
 <html>
     <head>

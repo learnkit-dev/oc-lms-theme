@@ -31,10 +31,12 @@ public function onStart()
 ==
 <div class="bg-gray-50 flex flex-col justify-center py-6 sm:px-6 lg:px-8 py-20">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
-        {% if this.theme.logo %}
-            <img class="mx-auto h-12 w-auto" src="{{ this.theme.logo.path }}" alt="Workflow">
-        {% else %}
-            <h1 class="text-center text-xl font-extrabold text-gray-900">{{ this.theme.name }}</h1>
+        {% if this.theme.show_branding_on_login_page %}
+            {% if this.theme.logo %}
+                <img class="mx-auto h-12 w-auto" src="{{ this.theme.logo.path }}" alt="Workflow">
+            {% else %}
+                <h1 class="text-center text-xl font-extrabold text-gray-900">{{ this.theme.name }}</h1>
+            {% endif %}
         {% endif %}
         <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Inloggen

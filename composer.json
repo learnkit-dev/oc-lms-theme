@@ -8,5 +8,9 @@
             "email": "sebastiaan@codecycler.com"
         }
     ],
-    "require": {}
+    "require": {
+        "rainlab/pages-plugin": "*",
+        "learnkit/oc-lms-plugin": "*",
+        "learnkit/oc-h5p-plugin": "*"
+    }
 }

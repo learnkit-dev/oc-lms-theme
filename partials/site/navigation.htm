@@ -169,12 +169,17 @@
             </nav>
             <div class="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
                 {% if not user %}
+                    {% if this.page.url != '/login' %}
                     <a href="{{ 'login'|page }}" class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
                         Inloggen
                     </a>
+                    {% endif %}
+
+                    {% if this.theme.allow_registration %}
                     <a href="{{ 'register'|page }}" class="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">
                         Registreren
                     </a>
+                    {% endif %}
                 {% else %}
                     {% if 'manager' in user.groups.lists('code') %}
                         <a href="{{ 'manage'|page }}" class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900 pr-5">

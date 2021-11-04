@@ -15,9 +15,16 @@ tabs:
         login_required:
             label: Login required
             span: left
-            type: checkbox
+            type: switch
             default: false
-            tab: General
+            tab: Features
+
+        allow_registration:
+            label: Allow registration
+            span: left
+            type: switch
+            default: true
+            tab: Features
 
         course_sidebar:
             label: Show course sidebar

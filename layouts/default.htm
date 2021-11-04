@@ -48,7 +48,9 @@ public function onStart()
 
         {% page %}
 
-        {% partial 'site/footer' %}
+        {% if this.theme.show_footer %}
+            {% partial 'site/footer' %}
+        {% endif %}
 
         {% framework %}
         {% scripts %}

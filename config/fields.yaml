@@ -12,6 +12,12 @@ tabs:
             type: fileupload
             tab: General
 
+        section_auth:
+            label: Authentication
+            span: full
+            type: section
+            tab: Features
+
         login_required:
             label: Login required
             span: left
@@ -24,6 +30,26 @@ tabs:
             span: left
             type: switch
             default: true
+            tab: Features
+
+        section_layout:
+            label: Layout
+            span: full
+            type: section
+            tab: Features
+
+        show_footer:
+            label: Show footer
+            span: left
+            type: switch
+            default: true
+            tab: Features
+
+        show_branding_on_login_page:
+            label: Show branding on login page
+            span: left
+            type: switch
+            default: false
             tab: Features
 
         course_sidebar:
@@ -40,7 +66,7 @@ tabs:
 
         new_course_day_count:
             label: New course day count
-            span: left
+            span: right
             type: number
             tab: Features
             trigger:

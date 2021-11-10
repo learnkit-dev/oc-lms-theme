@@ -11,7 +11,7 @@
     "require": {
         "rainlab/pages-plugin": "*",
         "rainlab/translate-plugin": "*",
-        "learnkit/oc-lms-plugin": "*",
-        "learnkit/oc-h5p-plugin": "*"
+        "learnkit/lms-plugin": "*",
+        "learnkit/h5p-plugin": "*"
     }
 }

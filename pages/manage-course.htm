@@ -11,7 +11,7 @@ function onStart()
 
     $this['team'] = $team;
 
-    $this['course'] = \LearnKit\LMS\Models\Course::where('team_id', $team->id)->where('slug', $this->param('courseSlug'))->first();
+    $this['course'] = $team->team_courses->where('slug', $this->param('courseSlug'))->first();
 }
 ?>
 ==
@@ -22,7 +22,7 @@ function onStart()
                 <div class="px-5">
                     <div class="flex flex-col">
                         <span class="text-2xl font-medium">Cursus {{ course.name }}</span>
-                        <span>Aantal gebruikers: {{ course.team.users|length }}</span>
+                        <span>Aantal gebruikers: {{ team.users|length }}</span>
                     </div>
 
                     <div class="pt-5">
@@ -82,7 +82,7 @@ function onStart()
                                                             </thead>
 
                                                             <tbody>
-                                                                {% for user in course.team.users %}
+                                                                {% for user in team.users %}
                                                                 <tr>
                                                                     <td class="px-0 py-2 font-medium">
                                                                         {{ user.name }} {{ user.surname }}

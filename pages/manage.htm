@@ -15,7 +15,7 @@ function onStart()
 
     $this['team'] = $team;
 
-    $this['courses'] = \LearnKit\LMS\Models\Course::where('team_id', $team->id)->get();
+    $this['courses'] = $team->team_courses;
 }
 
 function onChangeTeam()

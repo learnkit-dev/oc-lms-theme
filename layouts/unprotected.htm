@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+        <link href="{{ ['assets/css/theme.css', 'assets/vendor/fa/css/all.css']|theme }}" rel="stylesheet">
+
+        <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.3/dist/alpine.min.js" defer></script>
+
+        <title>{{ this.page.title }} - {{ this.theme.name }}</title>
+
+        <style>
+            {{ this.theme.custom_css|raw }}
+        </style>
+    </head>
+
+    <body class="bg-white">
+        {% partial 'site/navigation' %}
+
+        {% page %}
+
+        {% if this.theme.show_footer %}
+            {% partial 'site/footer' %}
+        {% endif %}
+
+        {% framework %}
+        {% scripts %}
+    </body>
+</html>

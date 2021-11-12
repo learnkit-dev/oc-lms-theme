@@ -1,0 +1,15 @@
+url = "/connect-error"
+layout = "unprotected"
+title = "Connection error"
+==
+<div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="space-y-5">
+        <h3 class="text-3xl font-bold">Whoops... 🐛</h3>
+
+        {% for error in errors.messages() %}
+        <div>
+            <p>{{ error[0] }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>

@@ -1,5 +1,5 @@
 title = "Course"
-url = "/course/:courseSlug/:pageSlug?"
+url = "/course/:pageCode?"
 layout = "default"
 is_hidden = 0
 
@@ -7,11 +7,8 @@ is_hidden = 0
 
 [h5p]
 
-[lmsCourse]
-slug = "{{ :courseSlug }}"
-
 [lmsPage]
-slug = "{{ :pageSlug }}"
+code = "{{ :pageCode }}"
 ==
 <div class="bg-gray-100">
     <main class="py-10">
@@ -19,7 +16,7 @@ slug = "{{ :pageSlug }}"
         <div class="max-w-3xl mx-auto px-4 sm:px-6 md:flex md:items-center md:justify-between md:space-x-5 lg:max-w-7xl lg:px-8">
             <div class="flex items-center space-x-5">
                 <div>
-                    <h1 class="text-2xl font-bold text-gray-900">{{ lmsCourse.name }} / {{ lmsPage.name }}</h1>
+                    <h1 class="text-2xl font-bold text-gray-900">{{ lmsPage.course.name }} / {{ lmsPage.name }}</h1>
                     {#<p class="text-sm font-medium text-gray-500">Applied for <a href="#" class="text-gray-900">Front End Developer</a> on <time datetime="2020-08-25">August 25, 2020</time></p>#}
                 </div>
             </div>
@@ -30,7 +27,7 @@ slug = "{{ :pageSlug }}"
             </div>#}
         </div>
 
-        <div class="mt-8 max-w-3xl mx-auto grid grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense {{ this.theme.course_sidebar and lmsCourse.properties.display_sidebar ? 'lg:grid-cols-3' : 'lg:grid-cols-2' }}">
+        <div class="mt-8 max-w-3xl mx-auto grid grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense {{ this.theme.course_sidebar and lmsPage.course.properties.display_sidebar ? 'lg:grid-cols-3' : 'lg:grid-cols-2' }}">
             <form class="space-y-6 lg:col-start-1 lg:col-span-2">
                 <section>
                     <div class="bg-white shadow sm:rounded-lg">
@@ -66,7 +63,7 @@ slug = "{{ :pageSlug }}"
                         class="float-left whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
                         href="javascript:;"
                         data-request="lmsPage::onRedirect"
-                        data-request-data="redirect: '/course/{{ this.param.courseSlug }}/{{ previousPage.slug }}'">
+                        data-request-data="redirect: '/course/{{ previousPage.code }}'">
                         <svg class="mr-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18"></path></svg>
 
                         {% if lmsPage.properties.override_previous_page_text %}
@@ -83,7 +80,7 @@ slug = "{{ :pageSlug }}"
                         class="float-right whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
                         href="javascript:;"
                         data-request="lmsPage::onMarkDone"
-                        data-request-data="redirect: '/course/{{ this.param.courseSlug }}/{{ nextPage.slug }}'">
+                        data-request-data="redirect: '/course/{{ nextPage.code }}'">
 
                         {% if lmsPage.properties.override_next_page_text %}
                             {{ lmsPage.properties.override_next_page_text }}
@@ -98,19 +95,19 @@ slug = "{{ :pageSlug }}"
                         class="float-right whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-green-600 hover:bg-green-700"
                         href="javascript:;"
                         data-request="lmsPage::onMarkDone"
-                        data-request-data="redirect: '{{ lmsCourse.properties.redirect_after_completion ?: '' }}'">
+                        data-request-data="redirect: '{{ lmsPage.course.properties.redirect_after_completion ?: '' }}'">
 
                         {% if lmsPage.properties.override_finish_page_text %}
                             {{ lmsPage.properties.override_finish_page_text }}
                         {% else %}
-                            {{ lmsCourse.properties.completion_button_text ?: 'Afronden' }}
+                            {{ lmsPage.course.properties.completion_button_text ?: 'Afronden' }}
                         {% endif %}
                     </a>
                     {% endif %}
                 </section>
             </form>
 
-            {% if this.theme.course_sidebar and lmsCourse.properties.display_sidebar %}
+            {% if this.theme.course_sidebar and lmsPage.course.properties.display_sidebar %}
             <section aria-labelledby="timeline-title" class="lg:col-start-3 lg:col-span-1">
                 <div class="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
                     <h2 id="timeline-title" class="text-lg font-medium text-gray-900">Overview</h2>
@@ -118,11 +115,11 @@ slug = "{{ :pageSlug }}"
                     <!-- Activity Feed -->
                     <div class="mt-6 flow-root">
                         <ul class="-mb-8">
-                            {% for page in lmsCourse.pages  %}
+                            {% for page in lmsPage.course.pages  %}
                             <li>
-                                <a href="{{ 'course'|page({courseSlug: lmsCourse.slug, pageSlug: page.slug}) }}">
+                                <a href="{{ 'course'|page({pageCode: page.code}) }}">
                                     <div class="relative pb-8">
-                                        {% if loop.index < lmsCourse.pages|length %}
+                                        {% if loop.index < lmsPage.course.pages|length %}
                                             <span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>
                                         {% endif %}
                                         <div class="relative flex space-x-3">

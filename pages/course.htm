@@ -115,11 +115,11 @@ code = "{{ :pageCode }}"
                     <!-- Activity Feed -->
                     <div class="mt-6 flow-root">
                         <ul class="-mb-8">
-                            {% for page in lmsPage.course.pages  %}
+                            {% for page in lmsPage.course.pages().isActive().get()  %}
                             <li>
                                 <a href="{{ 'course'|page({pageCode: page.code}) }}">
                                     <div class="relative pb-8">
-                                        {% if loop.index < lmsPage.course.pages|length %}
+                                        {% if loop.index < lmsPage.course.pages().isActive().get()|length %}
                                             <span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>
                                         {% endif %}
                                         <div class="relative flex space-x-3">

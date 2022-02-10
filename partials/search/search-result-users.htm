@@ -1,0 +1,14 @@
+{% for user in users %}
+<tr class="bg-white">
+    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.name }}</td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.email }}</td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+        <select class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" name="group" data-request="onUserGroup" data-track-input data-request-data="userId: {{ user.id }}">
+            <option>--</option>
+            {% for department in departments %}
+                <option {% if department.id == user.departments().first().id %}selected{% endif %} value="{{ department.id }}">{{ department.name }}</option>
+            {% endfor %}
+        </select>
+    </td>
+</tr>
+{% endfor %}

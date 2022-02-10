@@ -1,0 +1,86 @@
+url = "/admin/users"
+layout = "default"
+title = "Manage users"
+
+[session]
+security = "all"
+allowedUserGroups[] = "admin"
+redirect = "homepage"
+==
+<?php
+function onStart()
+{
+    $team = auth()->user()->teams()->first();
+
+    $this['users'] = $team->users;
+    $this['departments'] = $team->departments;
+}
+
+function onSearchUser()
+{
+    $team = auth()->user()->teams()->first();
+
+    $this['users'] = $team->users()
+        ->where('email', 'LIKE', input('term') . '%')
+        ->orWhere('name', 'LIKE', input('term') . '%')
+        ->get()
+        ->unique();
+
+    $this['departments'] = $team->departments;
+
+    return [
+        '#search-results' => $this->renderPartial('search/search-result-users')
+    ];
+}
+
+function onUserGroup()
+{
+    $team = auth()->user()->teams()->first();
+    $user = \RainLab\User\Models\User::find(input('userId'));
+    $groupId = input('group');
+
+    if ($groupId === '--') {
+        $user->departments()->sync([]);
+        $groupId = null;
+    }
+
+    if ($team && $user && $groupId && $team->users->contains($user)) {
+        // Change the group of the user
+        $user->departments()->sync($groupId);
+    }
+}
+?>
+==
+<div class="bg-gray-100">
+    <main class="py-10">
+        <div class="lg:max-w-7xl mx-auto">
+            <div class="flex-row items-center">
+                <div class="px-5">
+                    <div class="max-w-md">
+                        <input class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" type="search" name="term" data-request="onSearchUser" data-track-input placeholder="Zoeken" />
+                    </div>
+
+                    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 mt-5">
+                        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                    <tr>
+                                        <td class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Naam</td>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">E-mailadres</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Groep</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody id="search-results">
+                                    {% partial 'search/search-result-users' %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

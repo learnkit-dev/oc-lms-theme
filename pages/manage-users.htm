@@ -1,16 +1,25 @@
-title = "Manage users"
+url = "/manage/:groupCode/users"
 layout = "default"
-url = "/manage/:teamCode/users"
+title = "Manage users"
+
+[session]
+security = "all"
+allowedUserGroups[] = "manager"
 ==
 <?php
 function onStart()
 {
-    $team = auth()->user()->teams()
+    /*$team = auth()->user()->teams()
         ->where('code', $this->param('teamCode'))
         ->first();
 
     $this['team'] = $team;
-    $this['courses'] = $team->team_courses;
+    $this['courses'] = $team->team_courses;*/
+
+    $group = auth()->user()->departments()->firstWhere('code', $this->param('groupCode'));
+
+    $this['group'] = $group;
+    $this['courses'] = $group->team->team_courses;
 }
 ?>
 ==
@@ -20,8 +29,8 @@ function onStart()
             <div class="flex-row items-center">
                 <div class="px-5">
                     <div class="flex flex-col">
-                        <span class="text-2xl font-medium">Team {{ team.name }}</span>
-                        <span>Aantal gebruikers: {{ team.users|length }}</span>
+                        <span class="text-2xl font-medium">Groep {{ group.name }}</span>
+                        <span>Aantal gebruikers: {{ group.users|length }}</span>
                     </div>
 
                     <div class="pt-5">
@@ -46,7 +55,7 @@ function onStart()
                                   </thead>
                                   <tbody>
                                     
-                                    {% for user in team.users %}
+                                    {% for user in group.users %}
                                         <tr class="bg-white">
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                                 {{ user.name }} {{ user.surname }}

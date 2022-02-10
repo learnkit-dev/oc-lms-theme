@@ -1,26 +1,30 @@
-title = "Manage"
+url = "/manage/:groupCode?"
 layout = "default"
-url = "/manage/:teamCode?"
+title = "Manage"
+
+[session]
+security = "all"
+allowedUserGroups[] = "manager"
+redirect = "homepage"
 ==
 <?php
 function onStart()
 {
-    if (!$this->param('teamCode')) {
-        return redirect('/manage/' . auth()->user()->teams()->first()->code);
+    if (!$this->param('groupCode')) {
+        return redirect('/manage/' . auth()->user()->departments()->first()->code);
     }
 
-    $team = auth()->user()->teams()
-        ->where('code', $this->param('teamCode'))
-        ->first();
+    $department = auth()->user()->departments()
+        ->firstWhere('code', $this->param('groupCode'));
 
-    $this['team'] = $team;
+    $this['group'] = $department;
 
-    $this['courses'] = $team->team_courses;
+    $this['courses'] = $department->team->team_courses;
 }
 
-function onChangeTeam()
+function onChangeGroup()
 {
-    return redirect('/manage/' . input('team'));
+    return redirect('/manage/' . input('group'));
 }
 ?>
 ==
@@ -31,17 +35,17 @@ function onChangeTeam()
                 <div class="px-5">
                     <div class="flex flex-row">
                         <div class="flex flex-col flex-1">
-                            <span class="text-2xl font-medium">Team {{ team.name }}</span>
-                            <span>Aantal gebruikers: {{ team.users|length }}</span>
+                            <span class="text-2xl font-medium">Groep {{ group.name }}</span>
+                            <span>Aantal gebruikers: {{ group.users|length }}</span>
                         </div>
 
                         <div class="float-right">
                             <div>
-                                <label for="location" class="block text-sm font-medium text-gray-700">Wissel team</label>
-                                <select name="team" data-request="onChangeTeam" data-track-input id="location" name="location" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                                <label for="location" class="block text-sm font-medium text-gray-700">Wissel groep</label>
+                                <select name="team" data-request="onChangeGroup" data-track-input id="location" name="location" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                                     <option>...</option>
-                                    {% for teamOption in teams() %}
-                                        <option value="{{ teamOption.code }}">{{ teamOption.name }}</option>
+                                    {% for groupOption in user.departments %}
+                                        <option value="{{ groupOption.code }}">{{ groupOption.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -49,7 +53,10 @@ function onChangeTeam()
                     </div>
 
                     <div class="pt-2 flex flex-row space-x-2">
-                        <a href="{{ 'manage-users'|page({ teamCode: team.code }) }}" class="flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Overzicht per gebruiker</a>
+                        <a
+                            href="{{ 'manage-users'|page({ groupId: group.id }) }}"
+                            class="flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        >Overzicht per gebruiker</a>
                     </div>
 
                     <div class="pt-5">

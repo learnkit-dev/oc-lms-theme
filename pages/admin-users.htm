@@ -12,7 +12,7 @@ function onStart()
 {
     $team = auth()->user()->teams()->first();
 
-    $this['users'] = $team->users;
+    $this['users'] = $team->users()->where('email', '!=', auth()->user()->email)->get();
     $this['departments'] = $team->departments;
 }
 
@@ -21,6 +21,7 @@ function onSearchUser()
     $team = auth()->user()->teams()->first();
 
     $this['users'] = $team->users()
+        ->where('email', '!=', auth()->user()->email)
         ->where(function ($q) {
             $q
                 ->where('email', 'LIKE', input('term') . '%')

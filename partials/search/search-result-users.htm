@@ -12,3 +12,13 @@
     </td>
 </tr>
 {% endfor %}
+
+{% if users|length == 0 %}
+<tr class="bg-white">
+    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+        Geen resultaat
+    </td>
+    <td></td>
+    <td></td>
+</tr>
+{% endif %}

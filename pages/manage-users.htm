@@ -9,13 +9,6 @@ allowedUserGroups[] = "manager"
 <?php
 function onStart()
 {
-    /*$team = auth()->user()->teams()
-        ->where('code', $this->param('teamCode'))
-        ->first();
-
-    $this['team'] = $team;
-    $this['courses'] = $team->team_courses;*/
-
     $group = auth()->user()->departments()->firstWhere('code', $this->param('groupCode'));
 
     $this['group'] = $group;

@@ -21,10 +21,12 @@ function onSearchUser()
     $team = auth()->user()->teams()->first();
 
     $this['users'] = $team->users()
-        ->where('email', 'LIKE', input('term') . '%')
-        ->orWhere('name', 'LIKE', input('term') . '%')
-        ->get()
-        ->unique();
+        ->where(function ($q) {
+            $q
+                ->where('email', 'LIKE', input('term') . '%')
+                ->orWhere('name', 'LIKE', input('term') . '%');
+        })
+        ->get();
 
     $this['departments'] = $team->departments;
 

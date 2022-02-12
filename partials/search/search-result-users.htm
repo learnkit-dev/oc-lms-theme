@@ -1,24 +1,38 @@
-{% for user in users %}
-<tr class="bg-white">
-    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.name }}</td>
-    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.email }}</td>
-    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-        <select class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" name="group" data-request="onUserGroup" data-track-input data-request-data="userId: {{ user.id }}">
-            <option>--</option>
-            {% for department in departments %}
-                <option {% if department.id == user.departments().first().id %}selected{% endif %} value="{{ department.id }}">{{ department.name }}</option>
-            {% endfor %}
-        </select>
-    </td>
-</tr>
-{% endfor %}
+<table class="min-w-full divide-y divide-gray-200">
+    <thead class="bg-gray-50">
+    <tr>
+        <td class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Naam</td>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">E-mailadres</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Groep</th>
+    </tr>
+    </thead>
 
-{% if users|length == 0 %}
-<tr class="bg-white">
-    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-        Geen resultaat
-    </td>
-    <td></td>
-    <td></td>
-</tr>
-{% endif %}
+    <tbody id="search-results">
+        {% for user in users %}
+        <tr class="bg-white">
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.name }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.email }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                <select class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" name="group" data-request="onUserGroup" data-track-input data-request-data="userId: {{ user.id }}">
+                    <option>--</option>
+                    {% for department in departments %}
+                    <option {% if department.id == user.departments().first().id %}selected{% endif %} value="{{ department.id }}">{{ department.name }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        {% endfor %}
+
+        {% if users|length == 0 %}
+        <tr class="bg-white">
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                Geen resultaat
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+        {% endif %}
+    </tbody>
+</table>
+
+{{ users.render|raw }}

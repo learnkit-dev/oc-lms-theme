@@ -12,28 +12,50 @@ function onStart()
 {
     $team = auth()->user()->teams()->first();
 
-    $this['users'] = $team->users()->where('email', '!=', auth()->user()->email)->get();
+    $query = $team->users()
+        ->where('email', '!=', auth()->user()->email);
+
+    if (session()->get('admin.users.only_unattached')) {
+        $query->whereDoesntHave('departments');
+    }
+
+    $this['users'] = $query->paginate(5);
+
     $this['departments'] = $team->departments;
+    $this['only_unattached'] = session()->get('admin.users.only_unattached');
 }
 
 function onSearchUser()
 {
     $team = auth()->user()->teams()->first();
 
-    $this['users'] = $team->users()
-        ->where('email', '!=', auth()->user()->email)
-        ->where(function ($q) {
+    $query = $team->users()
+        ->where('email', '!=', auth()->user()->email);
+
+    if (session()->get('admin.users.only_unattached')) {
+        $query->whereDoesntHave('departments');
+    }
+
+    $query->where(function ($q) {
             $q
                 ->where('email', 'LIKE', input('term') . '%')
                 ->orWhere('name', 'LIKE', input('term') . '%');
         })
-        ->get();
+        ->paginate(5);
 
     $this['departments'] = $team->departments;
+    $this['only_unattached'] = session()->get('admin.users.only_unattached');
 
     return [
         '#search-results' => $this->renderPartial('search/search-result-users')
     ];
+}
+
+function onToggleCheckOnlyUnattached()
+{
+    session()->put('admin.users.only_unattached', !session()->get('admin.users.only_unattached'));
+
+    return redirect('/admin/users');
 }
 
 function onUserGroup()
@@ -59,26 +81,41 @@ function onUserGroup()
         <div class="lg:max-w-7xl mx-auto">
             <div class="flex-row items-center">
                 <div class="px-5">
-                    <div class="max-w-md">
-                        <input class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" type="search" name="term" data-request="onSearchUser" data-track-input placeholder="Zoeken" />
+                    <div class="flex space-x-10 items-center">
+                        <div class="flex flex-1 space-x-2 items-center">
+                            <input
+                                {% if only_unattached %}
+                                checked="checked"
+                                {% endif %}
+                                data-request="onToggleCheckOnlyUnattached"
+                                data-track-input
+                                data-request-data="enabled: '{{ only_unattached }}'"
+                                type="checkbox"
+                                name="only_unattached"
+                                id="only_unattached"
+                                class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                            >
+
+                            <label for="only_unattached">Alleen gebruikers zonder groep tonen</label>
+                        </div>
+
+                        <div class="max-w-md">
+                            <div class="mt-1 relative rounded-md shadow-sm">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                </div>
+
+                                <input class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 pl-10 block w-full sm:text-sm border-gray-300 rounded-md" type="search" name="term" data-request="onSearchUser" data-track-input placeholder="Zoeken" />
+                            </div>
+                        </div>
                     </div>
 
                     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 mt-5">
                         <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                                <table class="min-w-full divide-y divide-gray-200">
-                                    <thead class="bg-gray-50">
-                                    <tr>
-                                        <td class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Naam</td>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">E-mailadres</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Groep</th>
-                                    </tr>
-                                    </thead>
-
-                                    <tbody id="search-results">
-                                    {% partial 'search/search-result-users' %}
-                                    </tbody>
-                                </table>
+                            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg" id="search-results">
+                                {% partial 'search/search-result-users' %}
                             </div>
                         </div>
                     </div>
@@ -87,3 +124,35 @@ function onUserGroup()
         </div>
     </main>
 </div>
+
+<style>
+    .pagination {
+        display: flex;
+        padding: 1.5rem;
+        justify-content: flex-start;
+    }
+
+    .pagination li.active > a,.pagination li.active > span {
+        font-weight: 600;
+    }
+
+    .pagination li span,.pagination li a {
+        padding: 0.3rem 1.5rem;
+        border-width: 1px;
+        border-color: rgba(209, 213, 219, var(--tw-border-opacity));
+    }
+
+    .pagination li:first-child a,.pagination li:first-child span {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+    }
+
+    .pagination li:last-child a,.pagination li:last-child span {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+
+    .pagination li span:hover,.pagination li a:hover {
+        background-color: #ededed;
+    }
+</style>

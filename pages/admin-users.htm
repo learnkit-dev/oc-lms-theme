@@ -19,7 +19,7 @@ function onStart()
         $query->whereDoesntHave('departments');
     }
 
-    $this['users'] = $query->paginate(5);
+    $this['users'] = $query->paginate(50);
 
     $this['departments'] = $team->departments;
     $this['only_unattached'] = session()->get('admin.users.only_unattached');
@@ -41,7 +41,7 @@ function onSearchUser()
                 ->where('email', 'LIKE', input('term') . '%')
                 ->orWhere('name', 'LIKE', input('term') . '%');
         })
-        ->paginate(5);
+        ->paginate(50);
 
     $this['departments'] = $team->departments;
     $this['only_unattached'] = session()->get('admin.users.only_unattached');

@@ -40,9 +40,11 @@ function onStart()
                                           Naam
                                       </th>
                                         {% for course in courses %}
+                                        {% if resultForCourse(course.id, group.users().first()).max != 0 %}
                                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                               {{ course.name }}
                                           </th>
+                                        {% endif %}
                                         {% endfor %}
                                     </tr>
                                   </thead>
@@ -54,12 +56,14 @@ function onStart()
                                                 {{ user.name }} {{ user.surname }}
                                             </td>
                                             {% for course in courses %}
-                                          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                              <div class="flex flex-col">
-                                                  <span>{{ resultForCourse(course.id, user).percentageDone }}% gedaan</span>
-                                                  <span>{{ resultForCourse(course.id, user).total }} / {{ resultForCourse(course.id, user).max }} goed</span>
-                                              </div>
-                                          </td>
+                                            {% if resultForCourse(course.id, user).max != 0 %}
+                                              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                  <div class="flex flex-col">
+                                                      <span>{{ resultForCourse(course.id, user).percentageDone }}% gedaan</span>
+                                                      <span>{{ resultForCourse(course.id, user).total }} / {{ resultForCourse(course.id, user).max }} goed</span>
+                                                  </div>
+                                              </td>
+                                            {% endif %}
                                             {% endfor %}
                                         </tr>
                                     {% endfor %}

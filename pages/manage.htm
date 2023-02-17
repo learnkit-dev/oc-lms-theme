@@ -24,10 +24,14 @@ function onStart()
     $this['userDepartments'] = auth()->user()->departments()->orderBy('name')->get();
 
     $this['countUsers'] = $department->users()
-        ->whereDoesntHave('groups', function ($query) {
+        ->where(function ($query) use ($department) {
             return $query
-                ->where('code', 'manager')
-                ->orWhere('code', 'admin');
+                ->whereDoesntHave('groups', function ($query) {
+                    return $query
+                        ->where('code', 'manager')
+                        ->orWhere('code', 'admin');
+                })
+                ->orWhere('manager_department_id', $department->id);
         })
         ->count();
 

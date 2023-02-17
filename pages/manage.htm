@@ -14,10 +14,20 @@ function onStart()
         return redirect('/manage/' . auth()->user()->departments()->first()->code);
     }
 
-    $department = auth()->user()->departments()
+    $department = auth()->user()
+        ->departments()
+        ->with('team.team_courses')
         ->firstWhere('code', $this->param('groupCode'));
 
     $this['group'] = $department;
+
+    $this['countUsers'] = $department->users()
+        ->whereDoesntHave('groups', function ($query) {
+            return $query
+                ->where('code', 'manager')
+                ->orWhere('code', 'admin');
+        })
+        ->count();
 
     $this['courses'] = $department->team->team_courses;
 }
@@ -36,7 +46,7 @@ function onChangeGroup()
                     <div class="flex flex-row">
                         <div class="flex flex-col flex-1">
                             <span class="text-2xl font-medium">Groep {{ group.name }}</span>
-                            <span>Aantal gebruikers: {{ group.users|length }}</span>
+                            <span>Aantal gebruikers: {{ countUsers }}</span>
                         </div>
 
                         <div class="float-right">
@@ -93,7 +103,7 @@ function onChangeGroup()
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    
+
                                     {% for course in courses %}
                                     {% if resultForCourse(course.id, group.team.users().first()).max != 0 %}
                                     <tr class="bg-white">
@@ -101,7 +111,7 @@ function onChangeGroup()
                                         {{ course.name }}
                                       </td>
                                       <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {{ group.users|length }}
+                                        {{ countUsers }}
                                       </td>
                                       <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         {{ course.avgScore(group.id).percentageDone }}%
@@ -115,7 +125,7 @@ function onChangeGroup()
                                     </tr>
                                     {% endif %}
                                     {% endfor %}
-                                    
+
                                   </tbody>
                                 </table>
                               </div>

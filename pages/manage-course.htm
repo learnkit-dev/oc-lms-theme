@@ -13,6 +13,22 @@ function onStart()
 
     $this['group'] = $group;
 
+    $this['countUsers'] = $group->users()
+        ->whereDoesntHave('groups', function ($query) {
+            return $query
+                ->where('code', 'manager')
+                ->orWhere('code', 'admin');
+        })
+        ->count();
+
+    $this['users'] = $group->users()
+        ->whereDoesntHave('groups', function ($query) {
+            return $query
+                ->where('code', 'manager')
+                ->orWhere('code', 'admin');
+        })
+        ->get();
+
     $this['course'] = $group->team->team_courses->where('slug', $this->param('courseSlug'))->first();
 }
 ?>
@@ -24,7 +40,7 @@ function onStart()
                 <div class="px-5">
                     <div class="flex flex-col">
                         <span class="text-2xl font-medium">Cursus {{ course.name }}</span>
-                        <span>Aantal gebruikers: {{ group.users|length }}</span>
+                        <span>Aantal gebruikers: {{ countUsers }}</span>
                     </div>
 
                     <div class="pt-5">
@@ -49,7 +65,7 @@ function onStart()
                                     </tr>
                                   </thead>
                                   <tbody x-data="{ rowOpen: {} }">
-                                    
+
                                     {% for page in course.pages %}
                                         <tr>
                                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -66,7 +82,7 @@ function onStart()
                                                     {{ h5pContent.title }}
                                                   </td>
                                                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    {{ percentageById(block.content_id, group.users) }}%
+                                                    {{ percentageById(block.content_id, users) }}%
                                                   </td>
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                         <span class="underline text-blue-400 cursor-pointer" x-on:click="rowOpen[{{ h5pContent.id }}] = !rowOpen[{{ h5pContent.id }}]">Resultaat per gebruiker</span>
@@ -84,7 +100,7 @@ function onStart()
                                                             </thead>
 
                                                             <tbody>
-                                                                {% for user in group.users %}
+                                                                {% for user in users %}
                                                                 <tr>
                                                                     <td class="px-0 py-2 font-medium">
                                                                         {{ user.name }} {{ user.surname }}
@@ -112,7 +128,7 @@ function onStart()
                                             {% endif %}
                                         {% endfor %}
                                     {% endfor %}
-                                    
+
                                   </tbody>
                                 </table>
                               </div>

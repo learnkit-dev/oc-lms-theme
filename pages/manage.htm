@@ -21,6 +21,8 @@ function onStart()
 
     $this['group'] = $department;
 
+    $this['userDepartments'] = auth()->user()->departments()->orderBy('name')->get();
+
     $this['countUsers'] = $department->users()
         ->whereDoesntHave('groups', function ($query) {
             return $query
@@ -54,7 +56,7 @@ function onChangeGroup()
                                 <label for="location" class="block text-sm font-medium text-gray-700">Wissel groep</label>
                                 <select name="group" data-request="onChangeGroup" data-track-input id="location" name="location" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                                     <option>...</option>
-                                    {% for groupOption in user.departments %}
+                                    {% for groupOption in userDepartments %}
                                         <option value="{{ groupOption.code }}">{{ groupOption.name }}</option>
                                     {% endfor %}
                                 </select>

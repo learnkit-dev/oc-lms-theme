@@ -25,6 +25,39 @@ function onStart()
     $this['only_unattached'] = session()->get('admin.users.only_unattached');
 }
 
+function onDeleteUser()
+{
+    $team = auth()->user()->teams()->first();
+
+    $user = $team->users()->find(input('id'));
+
+    abort_unless(filled($user), 403);
+
+    $user->delete();
+
+    $query = $team->users()
+        ->where('email', '!=', auth()->user()->email);
+
+    if (session()->get('admin.users.only_unattached')) {
+        $query->whereDoesntHave('departments');
+    }
+
+    $query->where(function ($q) {
+        $q
+            ->where('email', 'LIKE', input('term') . '%')
+            ->orWhere('name', 'LIKE', input('term') . '%');
+    });
+
+    $this['users'] = $query->paginate(50);
+
+    $this['departments'] = $team->departments;
+    $this['only_unattached'] = session()->get('admin.users.only_unattached');
+
+    return [
+        '#search-results' => $this->renderPartial('search/search-result-users')
+    ];
+}
+
 function onSearchUser()
 {
     $team = auth()->user()->teams()->first();
